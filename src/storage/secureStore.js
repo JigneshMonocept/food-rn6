@@ -4,7 +4,7 @@ const keyName = "API_KEY";
 
 export const saveApiKey = async (keyValue) => {
   try {
-    await SecureStore.setItemAsync(keyName, keyValue);
+    await SecureStore.setItemAsync(keyName, JSON.stringify(keyValue));
   } catch (error) {
     console.error("Error saving API key:", error);
   }
@@ -12,7 +12,9 @@ export const saveApiKey = async (keyValue) => {
 
 export const getApiKey = async () => {
   try {
-    return await SecureStore.getItemAsync(keyName);
+    const stored = await SecureStore.getItemAsync(keyName);
+    const parsedKey = JSON.parse(stored);
+    return parsedKey;
   } catch (error) {
     console.error("Error reading API key:", error);
     return null;
